@@ -1,13 +1,13 @@
 const express = require('express');
 const path = require('path');
+const dotenv = require('dotenv');
 const Datastore = require('nedb');
 
-const app = express();
-const port = 3000; // Change this port if needed
-let leaderboard = [];
+dotenv.config();
 
-const dbFilePath = './leaderboard.db'; // Specify the file path for the NeDB database
-const db = new Datastore({ filename: dbFilePath, autoload: true });
+const app = express();
+const port = process.env.PORT;
+const db = new Datastore({ filename: process.env.DB_PATH, autoload: true });
 
 // Serve static files from the 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -25,9 +25,6 @@ app.post('/api/scores', (req, res) => {
   if (!name || !score || typeof score !== 'number') {
     return res.status(400).json({ error: 'Invalid data. Name and numeric score are required.' });
   }
-  // leaderboard.push({ name, score });
-  // leaderboard.sort((a, b) => b.score - a.score); // Sort the leaderboard in descending order
-  // Insert the new score into the leaderboard collection
   db.insert({ name, score }, (err) => {
     if (err) {
       console.error('Error adding score to leaderboard:', err.message);
@@ -49,7 +46,6 @@ app.get('/api/leaderboard', (req, res) => {
     }
   });
 });
-
 
 // Start the server
 app.listen(port, () => {
