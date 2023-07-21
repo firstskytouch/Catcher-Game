@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#game-container {
+  margin: auto;
+  max-height: 75vw;
+  max-width: calc(4 / 3 * 100vh);
+}
