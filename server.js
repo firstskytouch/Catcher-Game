@@ -60,6 +60,10 @@ app.get("/api/leaderboard", (req, res) => {
     });
 });
 
+app.use((_, res) => {
+  res.redirect('/');
+});
+
 // Start the server
 server.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
